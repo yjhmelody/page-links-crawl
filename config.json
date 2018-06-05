@@ -12,14 +12,15 @@
     "request": {
         "timeout": 5000
     },
-    
+
     "savePath": null,
-    "saveInterval": 500,
+    "saveInterval": 50,
+    "maxPages": 50,
     "mysql": {
         "host": "115.159.125.83",
         "user": "root",
         "password": null,
         "database": "test2",
-        "connectionLimit" : 10
+        "connectionLimit": 10
     }
 }

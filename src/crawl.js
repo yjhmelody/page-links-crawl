@@ -14,6 +14,7 @@ const config = {
     savePath: './temp/links.json',
     // 存储间隔
     saveInterval: 100,
+    maxPages: 1000,
     request: {
         timeout: 2000
     }
@@ -119,23 +120,31 @@ function crawlPage(func, url) {
  * 调度器，管理全局队列，urls去重，传入具体的单页面处理逻辑和数据存储逻辑
  * @param {Function} crawlFn 爬取某个页面的逻辑 参数为 url
  * @param {Function} saveFn 存储该页面爬取到数据 参数是 json
+ * @param {number} id 用来区分不同调度器
  */
-async function dispatch(crawlFn, saveFn) {
+async function dispatch(crawlFn, saveFn, id) {
     while (queue.length) {
         try {
             let url = queue.shift()
             let page = await crawlFn(url)
-            
+
             if (page.links == null) {
                 continue
             }
-            
+
             if (mainPages.length > count) {
                 console.log(count)
-                await saveFn(page)
+                if (id == 0) {
+                    console.log('存储...')
+                    await saveFn(page)
+                }
                 // saveFn(config.savePath, mainPages)
+                if (count > config.maxPages) {
+                    return
+                }
                 count += config.saveInterval
             }
+
             page.links.forEach(element => {
                 if (!uniqUrls.has(element)) {
                     queue.push(element)
@@ -146,8 +155,8 @@ async function dispatch(crawlFn, saveFn) {
             console.log('mainPages', mainPages.length)
             console.log('queue', queue.length)
             console.log('uniqUrls', uniqUrls.size)
-            
-        } catch(err) {
+
+        } catch (err) {
             console.log(err)
         }
     }
@@ -159,7 +168,6 @@ async function dispatch(crawlFn, saveFn) {
  * @param {Object} 占位
  */
 function savePageLinks(path, _) {
-    console.log("test.....")
     let json = JSON.stringify({
         "pageLinks": mainPages
     })
@@ -235,4 +243,3 @@ exports.setHeaders = setHeaders
 exports.getConfig = getConfig
 exports.sleep = sleep
 exports.crawlPage = crawlPage
-
