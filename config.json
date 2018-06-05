@@ -1,0 +1,25 @@
+{
+    "asyncMax": 20,
+    "urls": [
+        "https://en.wikipedia.org/wiki/C_(programming_language)",
+        "https://en.wikipedia.org/wiki/Lisp_(programming_language)",
+        "https://en.wikipedia.org/wiki/Algorithm",
+        "https://en.wikipedia.org/wiki/Data_structure"
+    ],
+    "headers": {
+        "Connection": "close"
+    },
+    "request": {
+        "timeout": 5000
+    },
+    
+    "savePath": null,
+    "saveInterval": 500,
+    "mysql": {
+        "host": "115.159.125.83",
+        "user": "root",
+        "password": null,
+        "database": "test2",
+        "connectionLimit" : 10
+    }
+}

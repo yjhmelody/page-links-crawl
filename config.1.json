@@ -1,0 +1,38 @@
+{
+    "asyncMax": 50,
+    "urls": [
+        "https://en.wikipedia.org/wiki/C_(programming_language)#cite_note-AutoTX-1-7",
+        "https://en.wikipedia.org/wiki/China",
+        "https://en.wikipedia.org/wiki/Hangzhou_Dianzi_University",
+        "http://www.hdu.edu.cn/",
+        "https://www.wikipedia.org/",
+        "https://www.hao123.com/",
+        "https://github.com/",
+        "https://www.bilibili.com/",
+        "http://en.cppreference.com",
+        "http://spark.apache.org",
+        "https://www.douban.com/",
+        "https://weibo.com",
+        "https://www.zhihu.com/",
+        "http://news.sina.com.cn/",
+        "https://www.nhk.or.jp/",
+        "https://www.autohome.com.cn",
+        "https://www.naver.com/"
+    ],
+    "headers": {
+        "Connection": "close"
+    },
+    "request": {
+        "timeout": 2000
+    },
+    
+    "savePath": null,
+    "saveInterval": 100,
+    "mysql": {
+        "host": "115.159.125.83",
+        "user": "root",
+        "password": "zhjlsyjh123",
+        "database": "test2",
+        "connectionLimit" : 10
+    }
+}
