@@ -21,12 +21,12 @@ function checkConfig(config) {
         process.exit(-1)
     }
 
-    if(config.request != null) {
-        crawl.getConfig().request = config.request        
+    if (config.request != null) {
+        crawl.getConfig().request = config.request
     }
 
-    if(config.maxPages != null) {
-        crawl.getConfig().maxPages = config.maxPages        
+    if (config.maxPages != null) {
+        crawl.getConfig().maxPages = config.maxPages
     }
 
     if (config.urls.length < 1) {
@@ -61,13 +61,12 @@ function checkConfig(config) {
         await crawl.sleep(2000)
 
         // 存储到Mysql
-        saveToMysql = _.curry(db.insertWikiPage)(db.pool)
+        const saveToMysql = _.curry(db.insertWikiPage)(db.pool)
         // 存储到Json文件
-        saveToJson = _.curry(crawl.savePageLinks)(crawl.getConfig().savePath)
+        const saveToJson = _.curry(crawl.savePageLinks)(crawl.getConfig().savePath)
 
         // 爬取网页
         crawl.dispatchWiki(saveToJson)(0)
-
         setTimeout(() => {
             for (let i = 1; i < config.asyncMax; i++) {
                 crawl.dispatchWiki(saveToJson)(i)

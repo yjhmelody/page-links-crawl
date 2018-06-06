@@ -5,7 +5,6 @@ const cheerio = require('cheerio')
 const _ = require('lodash')
 const process = require('process')
 
-// const db = require('./db')
 
 const config = {
     headers: {
@@ -133,16 +132,13 @@ async function dispatch(crawlFn, saveFn, id) {
             }
 
             if (mainPages.length > count) {
-                console.log(count)
-                if (id == 0) {
-                    console.log('存储...')
-                    await saveFn(page)
-                }
-                // saveFn(config.savePath, mainPages)
                 if (count > config.maxPages) {
                     return
                 }
                 count += config.saveInterval
+                console.log(id, '存储...')
+                saveFn(page)
+                // await saveFn(page)                
             }
 
             page.links.forEach(element => {
@@ -153,8 +149,8 @@ async function dispatch(crawlFn, saveFn, id) {
             })
             mainPages.push(page)
             console.log('mainPages', mainPages.length)
-            console.log('queue', queue.length)
-            console.log('uniqUrls', uniqUrls.size)
+            // console.log('queue', queue.length)
+            // console.log('uniqUrls', uniqUrls.size)
 
         } catch (err) {
             console.log(err)
@@ -172,7 +168,7 @@ function savePageLinks(path, _) {
         "pageLinks": mainPages
     })
     fs.writeFileSync(path, json)
-    console.log("存储完成: 时间" + new Date(Date.now()))
+    console.log("存储完成:\n 时间" + new Date(Date.now()))
 }
 
 /**
@@ -214,6 +210,26 @@ const uniqUrls = new Set()
 // url队列，用于并发
 let queue = []
 
+
+// 在Job queue中的队列分为两种类型：macro-task和microTask。我们举例来看执行顺序的规定，我们设
+
+// macro-task队列包含任务: a1, a2 , a3 
+// micro-task队列包含任务: b1, b2 , b3
+
+// 执行顺序为，首先执行marco-task队列开头的任务，也就是 a1 任务，执行完毕后，在执行micro-task队列里的所有任务，也就是依次执行b1, b2 , b3，执行完后清空micro-task中的任务，接着执行marco-task中的第二个任务，依次循环。
+
+// 了解完了macro-task和micro-task两种队列的执行顺序之后，我们接着来看，真实场景下这两种类型的队列里真正包含的任务（我们以node V8引擎为例），在node V8中，这两种类型的真实任务顺序如下所示：
+
+// macro-task队列真实包含任务：
+
+// script(主程序代码),setTimeout, setInterval, setImmediate, I/O, UI rendering*
+
+// micro-task队列真实包含任务： 
+// process.nextTick, Promises, Object.observe, MutationObserver
+
+// 由此我们得到的执行顺序应该为：
+
+// script(主程序代码)—>process.nextTick—>Promises…——>setTimeout——>setInterval——>setImmediate——> I/O——>UI rendering
 
 /**
  * 

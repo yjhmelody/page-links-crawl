@@ -1,5 +1,5 @@
 {
-    "asyncMax": 20,
+    "asyncMax": 30,
     "urls": [
         "https://en.wikipedia.org/wiki/C_(programming_language)",
         "https://en.wikipedia.org/wiki/Lisp_(programming_language)",
@@ -14,8 +14,8 @@
     },
 
     "savePath": null,
-    "saveInterval": 50,
-    "maxPages": 50,
+    "saveInterval": 100000,
+    "maxPages": 100000,
     "mysql": {
         "host": "115.159.125.83",
         "user": "root",
